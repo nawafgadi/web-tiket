@@ -37,6 +37,18 @@
                     <label>Nomor WhatsApp</label>
                     <input type="tel" id="wa" required placeholder="0812xxxx">
                 </div>
+                <div class="input-group">
+                    <label>Jenis Tiket</label>
+                    <select id="jenisTiket" required onchange="updateHarga()">
+                        <option value="">Pilih Jenis Tiket</option>
+                        <option value="Reguler">Reguler - Rp 100.000</option>
+                        <option value="VIP">VIP - Rp 250.000</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Harga</label>
+                    <input type="text" id="harga" readonly placeholder="Pilih jenis tiket terlebih dahulu">
+                </div>
                 <button type="submit" class="btn-primary">Generate My Ticket</button>
             </form>
         </div>
@@ -47,7 +59,7 @@
                     <div class="ticket-brand">
                         <span class="text-red">STELK</span> <span class="text-dark">PWT</span>
                     </div>
-                    <div class="ticket-type">VIP PASS</div>
+                    <div class="ticket-type" id="ticketType">VIP PASS</div>
                 </div>
                 
                 <div class="ticket-body">

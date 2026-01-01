@@ -8,11 +8,15 @@ if (ticketForm) {
         e.preventDefault();
         
         currentTicketID = "HUT33-" + Math.floor(Math.random() * 1000000);
+        const jenis = document.getElementById('jenisTiket').value;
+        const harga = jenis === 'Reguler' ? 100000 : 250000;
         const dataBaru = {
             id: currentTicketID,
             nama: document.getElementById('nama').value,
             kelas: document.getElementById('kelas').value,
             wa: document.getElementById('wa').value,
+            jenis: jenis,
+            harga: harga,
             status: "Belum Bayar",
             waktu: new Date().toLocaleString()
         };
@@ -29,9 +33,23 @@ if (ticketForm) {
     });
 }
 
+function updateHarga() {
+    const jenis = document.getElementById('jenisTiket').value;
+    const hargaInput = document.getElementById('harga');
+    if (jenis === 'Reguler') {
+        hargaInput.value = 'Rp 100.000';
+    } else if (jenis === 'VIP') {
+        hargaInput.value = 'Rp 250.000';
+    } else {
+        hargaInput.value = '';
+    }
+}
+
 function tampilkanTiket(data) {
     ticketForm.style.display = "none";
     document.getElementById('ticketResult').style.display = "block";
+    
+    document.getElementById('ticketType').innerText = data.jenis.toUpperCase() + " PASS";
     
     const statusEl = document.getElementById('statusUser');
     statusEl.innerText = data.status;
@@ -70,11 +88,14 @@ if (adminTableBody) {
         
         daftarTiket.forEach((item, index) => {
             const statusClass = item.status === "Lunas" ? "text-blue" : "text-danger";
+            const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.harga);
             adminTableBody.innerHTML += `
                 <tr>
                     <td class="text-white">${index + 1}</td>
                     <td class="text-white">${item.nama}</td>
                     <td class="text-white">${item.id}</td>
+                    <td class="text-white">${item.jenis}</td>
+                    <td class="text-white">${hargaFormatted}</td>
                     <td class="${statusClass}">${item.status}</td>
                     <td>
                         <button onclick="konfirmasiLunas('${item.id}')" class="btn-primary" style="padding: 5px 10px; font-size: 12px;">Set Lunas</button>
@@ -101,7 +122,8 @@ if (adminTableBody) {
         const data = daftarTiket.find(t => t.id === input);
 
         if (data) {
-            alert(`DATA DITEMUKAN!\nNama: ${data.nama}\nStatus: ${data.status.toUpperCase()}`);
+            const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(data.harga);
+            alert(`DATA DITEMUKAN!\nNama: ${data.nama}\nJenis: ${data.jenis}\nHarga: ${hargaFormatted}\nStatus: ${data.status.toUpperCase()}`);
             if(data.status !== "Lunas") {
                 if(confirm("User belum bayar. Bayar cash sekarang?")) {
                     konfirmasiLunas(data.id);
@@ -167,11 +189,23 @@ window.scanWithCamera = () => {
 
     Quagga.onDetected(function (result) {
         const code = result.codeResult.code;
-        document.getElementById('scanInput').value = code;
         Quagga.stop();
         interactive.style.display = 'none';
-        alert('Barcode terdeteksi: ' + code + '. Klik Scan untuk proses.');
-        // scanTicket(); // Hapus auto scan, biar user klik manual
+        
+        let daftarTiket = JSON.parse(localStorage.getItem('tiketData')) || [];
+        const data = daftarTiket.find(t => t.id === code);
+        
+        if (data) {
+            const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(data.harga);
+            alert(`DATA DITEMUKAN!\nNama: ${data.nama}\nJenis: ${data.jenis}\nHarga: ${hargaFormatted}\nStatus: ${data.status.toUpperCase()}`);
+            if(data.status !== "Lunas") {
+                if(confirm("User belum bayar. Bayar cash sekarang?")) {
+                    konfirmasiLunas(data.id);
+                }
+            }
+        } else {
+            alert("Tiket Tidak Valid!");
+        }
     });
 };
 
@@ -195,8 +229,21 @@ window.scanFromImage = () => {
         }, function(result) {
             if (result.codeResult) {
                 const code = result.codeResult.code;
-                document.getElementById('scanInput').value = code;
-                alert('Barcode dari gambar terdeteksi: ' + code + '. Klik Scan untuk proses.');
+                
+                let daftarTiket = JSON.parse(localStorage.getItem('tiketData')) || [];
+                const data = daftarTiket.find(t => t.id === code);
+                
+                if (data) {
+                    const hargaFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(data.harga);
+                    alert(`DATA DITEMUKAN!\nNama: ${data.nama}\nJenis: ${data.jenis}\nHarga: ${hargaFormatted}\nStatus: ${data.status.toUpperCase()}`);
+                    if(data.status !== "Lunas") {
+                        if(confirm("User belum bayar. Bayar cash sekarang?")) {
+                            konfirmasiLunas(data.id);
+                        }
+                    }
+                } else {
+                    alert("Tiket Tidak Valid!");
+                }
             } else {
                 alert('Barcode tidak ditemukan di gambar.');
             }
