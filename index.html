@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiket HUT 33 SMK Telkom PWT</title>
+    <link rel="stylesheet" href="styel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-placeholder">33</div>
+            <h1>33rd Anniversary</h1>
+            <p class="school-name">SMK TELKOM PURWOKERTO</p>
+            <div class="tagline">"Inspiring the Future Digital Generation"</div>
+        </header>
+
+        <div class="card main-card">
+            <div class="card-header">
+                <h2>Registrasi Tiket</h2>
+                <div class="line-decorator"></div>
+            </div>
+            
+            <form id="ticketForm">
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="nama" required placeholder="Masukkan nama sesuai identitas">
+                </div>
+                <div class="input-group">
+                    <label>Kelas / Angkatan</label>
+                    <input type="text" id="kelas" required placeholder="Contoh: XII Tel 1 / Alumni 28">
+                </div>
+                <div class="input-group">
+                    <label>Nomor WhatsApp</label>
+                    <input type="tel" id="wa" required placeholder="0812xxxx">
+                </div>
+                <button type="submit" class="btn-primary">Generate My Ticket</button>
+            </form>
+        </div>
+
+        <div id="ticketResult" style="display: none;">
+            <div class="ticket-card">
+                <div class="ticket-top">
+                    <div class="ticket-brand">
+                        <span class="text-red">STELK</span> <span class="text-dark">PWT</span>
+                    </div>
+                    <div class="ticket-type">VIP PASS</div>
+                </div>
+                
+                <div class="ticket-body">
+                    <h3 class="event-title">E-TICKET HUT 33</h3>
+                    <div id="congratsMessage" style="display: none;">
+                        <p class="wish">"Teruslah menginspirasi dan mencetak generasi digital yang unggul."</p>
+                    </div>
+                    
+                    <div class="barcode-wrapper">
+                        <canvas id="barcode" width="300" height="100"></canvas>
+                        <p style="text-align: center; font-size: 0.8rem; color: #666; margin-top: 10px;">Scan barcode ini di admin untuk konfirmasi pembayaran</p>
+                    </div>
+                    
+                    <p id="statusUser" class="status-badge"></p>
+                </div>
+
+                <div id="paymentSection" class="payment-area">
+                    <p>Selesaikan Pembayaran:</p>
+                    <button onclick="showQR()" class="btn-qris">
+                        <img src="https://img.icons8.com/material-outlined/24/ffffff/qr-code.png" style="vertical-align: middle;"/> Scan QRIS
+                    </button>
+                    <div id="qrisImage" style="display:none;">
+                        <img src="./foto/Screenshot 2026-01-01 151059.png" alt="QRIS" class="qris-img">
+                    </div>
+                </div>
+                
+                <button onclick="goBack()" class="btn-secondary" style="margin-top: 20px;">Kembali ke Form</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="logika.js"></script>
+</body>
+</html>

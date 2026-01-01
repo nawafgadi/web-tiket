@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | HUT 33</title>
+    <link rel="stylesheet" href="styel.css">
+</head>
+<body class="admin-body">
+    <div class="container-admin">
+        <header>
+            <h1>Dashboard Panitia <span class="text-blue">HUT 33</span></h1>
+            <button onclick="clearData()" class="btn-danger">Hapus Semua Data</button>
+        </header>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>ID</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    </tbody>
+            </table>
+        </div>
+        <a href="index.html" class="back-link">← Kembali ke Halaman User</a>
+    </div>
+
+<div class="card" style="margin-top: 30px;">
+    <h3 class="text-white"> Scan Barcode</h3>
+    <input type="text" id="scanInput" placeholder="Input Kode Barcode..." style="width: 70%;" class="text-white">
+    <button onclick="scanTicket()" class="btn-primary" style="width: 25%;">Scan</button>
+    <br><br>
+    <input type="file" id="imageInput" accept="image/*" style="margin-bottom: 10px;" class="text-white">
+    <button onclick="scanFromImage()" class="btn-primary">Scan from Image</button>
+    <br><br>
+    <button onclick="scanWithCamera()" class="btn-primary">Scan with Camera</button>
+    <div id="interactive" class="viewport" style="display: none;"></div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="logika.js"></script>
+</body>
+</html>
